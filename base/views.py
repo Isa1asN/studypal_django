@@ -4,6 +4,6 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 
-home = lambda req : HttpResponse('<h1 >Home Page</h1><button >click here</button><input />')
+home = lambda req : render(req, 'home.html')
 
-room = lambda req : HttpResponse('ROOM')
+room = lambda req : render(req, 'room.html')
