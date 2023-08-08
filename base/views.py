@@ -1,7 +1,28 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 from .models import Room, Topic
 from .forms import RoomForm
+
+def loginPage(req):
+    context = {}
+    if req.method == "POST":
+        username = req.POST.get('username')
+        password = req.POST.get('password')
+        try:
+            user = User.objects.get(username=username)
+        except:
+            messages.error(req, 'User doesnot exist!')
+        user = authenticate(req, username=username, password=password)
+        if user is not None:
+            login(req, user)
+            return redirect('home')
+        else:
+            messages.error(req, 'Username or Password doesnot exist')
+
+    return render(req, 'base/login_register.html', context)
 
 def home(req):
     q = req.GET.get('q') if req.GET.get('q') != None else ''
