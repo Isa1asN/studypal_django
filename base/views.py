@@ -21,8 +21,11 @@ def loginPage(req):
             return redirect('home')
         else:
             messages.error(req, 'Username or Password doesnot exist')
-
     return render(req, 'base/login_register.html', context)
+
+def logoutUser(req):
+    logout(req)
+    return redirect('home')
 
 def home(req):
     q = req.GET.get('q') if req.GET.get('q') != None else ''
