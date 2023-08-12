@@ -7,13 +7,15 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from .models import Room, Topic
 from .forms import RoomForm
+from django.contrib.auth.forms import UserCreationForm
 
 def loginPage(req):
-    context = {}
+    page = 'login'
+    context = {'page' : page}
     if req.user.is_authenticated:
         return redirect('home')
     if req.method == "POST":
-        username = req.POST.get('username')
+        username = req.POST.get('username').lower()
         password = req.POST.get('password')
         try:
             user = User.objects.get(username=username)
@@ -30,6 +32,20 @@ def loginPage(req):
 def logoutUser(req):
     logout(req)
     return redirect('home')
+
+def registerPage(req):
+    form = UserCreationForm()
+    if req.method == 'POST':
+        form = UserCreationForm(req.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.username = user.username.lower()
+            user.save()
+            login(req, user)
+            return redirect('home')
+        else:
+            messages.error(req, 'An error when registering')
+    return render(req, 'base/login_register.html', {'form': form})
 
 def home(req):
     q = req.GET.get('q') if req.GET.get('q') != None else ''
@@ -85,6 +101,5 @@ def deleteRoom(req, pk):
         room.delete()
         return redirect('home')
     return render(req, 'base/delete.html', {'obj':room})
-
 
 
