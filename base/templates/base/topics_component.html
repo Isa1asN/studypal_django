@@ -4,11 +4,13 @@
     </div>
     <ul class="topics__list">
       <li>
-        <a href="{% url 'home' %}" class="active">All <span>553</span></a>
+        <a href="{% url 'home' %}" class="active">All <span>{{topics.count}}</span></a>
       </li>
+      {% for topic in topics  %}
       <li>
-        <a href="/">Python <span>232</span></a>
+        <a href="{% url 'home' %}?q={{topic.name}}">{{topic.name}} <span>{{topic.room_set.all.count}}</span></a>
       </li>
+      {% endfor %}
    
     </ul>
     <a class="btn btn--link" href="topics.html">
@@ -20,11 +22,3 @@
     </a>
   </div>
 
-        
-        {% for topic in topics  %}
-        <div>
-            <a href="{% url 'home' %}?q={{topic.name}}">
-                {{topic.name}}
-            </a>
-        </div>
-        {% endfor %}
