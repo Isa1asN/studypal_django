@@ -83,31 +83,40 @@ def room(req, pk):
 @login_required(login_url='login')
 def createRoom(req):
     form = RoomForm()
+    topics = Topic.objects.all()
 
     if req.method == 'POST':
-        form = RoomForm(req.POST)
-        if form.is_valid():
-            room = form.save(commit=False)
-            room.host = req.user
-            room.save()
-            return redirect('home')
-    context = {'form' : form}
+        topic_name = req.POST.get('topic')
+        topic, created = Topic.objects.get_or_create(name=topic_name)
+        
+        Room.objects.create(
+            host = req.user,
+            topic = topic,
+            name = req.POST.get('name'),
+            description = req.POST.get('description'),
+        )
+        return redirect('home')
+    context = {'form' : form, 'topics' : topics}
     return render(req, 'base/room_form.html', context )
 
 @login_required(login_url='login')
 def updateRoom(req, pk):
     room = Room.objects.get(id = pk)
     form = RoomForm(instance=room)
+    topics = Topic.objects.all()
 
     if req.user != room.host:
         return HttpResponse('You are not allowed here. ')
 
     if req.method == 'POST':
-        form = RoomForm(req.POST, instance=room)
-        if form.is_valid:
-            form.save()
-            return redirect('home')
-    context = {'form' : form }
+        topic_name = req.POST.get('topic')
+        topic, created = Topic.objects.get_or_create(name=topic_name)
+        room.name = req.POST.get('name')
+        room.topic = topic
+        room.description = req.POST.get('description')
+        room.save()
+        return redirect('home')
+    context = {'form' : form , 'topics' : topics, 'room' : room}
     return render(req, 'base/room_form.html', context)
 
 @login_required(login_url='login')
