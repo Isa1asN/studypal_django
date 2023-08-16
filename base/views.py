@@ -146,3 +146,7 @@ def userProfile(req, pk):
     room_messages = Message.objects.filter(user= user)
     context = {'user' : user, 'rooms' : rooms, 'room_messages' : room_messages, 'topics':topics}
     return render(req, 'base/profile.html', context)
+
+@login_required(login_url='login')
+def updateProfile(req):
+    return render(req, 'base/update_profile.html')
