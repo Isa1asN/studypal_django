@@ -159,6 +159,7 @@ def updateProfile(req):
             return redirect('user-profile', req.user.id)
     return render(req, 'base/update_profile.html', context)
 
+# mainly used for the topics more option...and in mobile version
 def topicsPage(req):
     q = req.GET.get('q') if req.GET.get('q') != None else ''
     rooms = Room.objects.filter(
@@ -170,3 +171,7 @@ def topicsPage(req):
     room_count = rooms.count()
     context = {'rooms': rooms, 'topics' : topics, 'room_count' : room_count}
     return render(req, 'base/topics.html', context=context)
+# mainly used for the topics more option...and in mobile versio
+def activitiesPage(req):
+    room_messages = Message.objects.all().order_by('-created')
+    return render(req, 'base/activity.html', {'room_messages' : room_messages})
