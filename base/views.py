@@ -158,3 +158,15 @@ def updateProfile(req):
             form.save()
             return redirect('user-profile', req.user.id)
     return render(req, 'base/update_profile.html', context)
+
+def topicsPage(req):
+    q = req.GET.get('q') if req.GET.get('q') != None else ''
+    rooms = Room.objects.filter(
+        Q(topic__name__icontains=q) |
+        Q(name__icontains=q) |
+        Q(description__icontains=q) 
+        )
+    topics = Topic.objects.all()
+    room_count = rooms.count()
+    context = {'rooms': rooms, 'topics' : topics, 'room_count' : room_count}
+    return render(req, 'base/topics.html', context=context)
