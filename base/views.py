@@ -9,6 +9,7 @@ from .models import Room, Topic, Message
 from .forms import RoomForm, UserForm
 from django.contrib.auth.forms import UserCreationForm
 
+
 def loginPage(req):
     page = 'login'
     context = {'page' : page}
@@ -68,7 +69,7 @@ def room(req, pk):
     # trying to get all messages associated to a room 
     room_messages = room.message_set.all().order_by('-created')
     if req.method == 'POST':
-        # the message/commment
+        # the message/commment in the rooms
         message = Message.objects.create(
             user = req.user,
             room = room,
