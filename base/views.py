@@ -5,9 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from .models import Room, Topic, Message, User
-from .forms import RoomForm, UserForm
-from django.contrib.auth.forms import UserCreationForm
-
+from .forms import RoomForm, UserForm, MyUserCreationForm
 
 def loginPage(req):
     page = 'login'
@@ -34,9 +32,9 @@ def logoutUser(req):
     return redirect('home')
 
 def registerPage(req):
-    form = UserCreationForm()
+    form = MyUserCreationForm()
     if req.method == 'POST':
-        form = UserCreationForm(req.POST)
+        form = MyUserCreationForm(req.POST)
         if form.is_valid():
             user = form.save(commit=False)
             user.username = user.username.lower()
@@ -152,7 +150,7 @@ def updateProfile(req):
     form = UserForm(instance=req.user)
     context = {'form' : form}
     if req.method == 'POST' : 
-        form = UserForm(req.POST, instance=req.user)
+        form = UserForm(req.POST, req.FILES, instance=req.user)
         if form.is_valid():
             form.save()
             return redirect('user-profile', req.user.id)
