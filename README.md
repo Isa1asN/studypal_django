@@ -1,6 +1,12 @@
 # StudyPal
 
 A discord like app where chat rooms can be created to discuss
+* Authentication
+* CRUD operations on rooms and messages
+* basic django-rest framework set
+* profile update feature with profile picture
+* mobile responsive
+* Image and file sharing feature (to be done)
 <hr>
 
 Demo:
