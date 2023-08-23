@@ -2,7 +2,7 @@
 
 A discord like app where chat rooms can be created to discuss.
 <hr>
-App features: 
+
 * Authentication
 * CRUD operations on rooms and messages
 * basic django-rest framework set
