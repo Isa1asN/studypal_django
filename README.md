@@ -1,7 +1,9 @@
 # StudyPal
 
 A discord like app where chat rooms can be created to discuss
+<hr>
 
 Demo:
-<img src="" />
+<hr>
+<img src="https://github.com/Isa1asN/studypal_django/blob/main/static/images/Capture.JPG?raw=true" />
 <img src="" />
